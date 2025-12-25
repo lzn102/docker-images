@@ -11,10 +11,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-# 使用清华源加速 apt
-RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
-    sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list
-
 # 安装系统依赖
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.10 \
@@ -27,14 +23,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && ln -sf /usr/bin/python3.10 /usr/bin/python3 \
     && ln -sf /usr/bin/python3.10 /usr/bin/python
 
-# 使用 pip 安装 uv
-RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple uv
-
-# 配置 uv 使用清华 PyPI 源
-ENV UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
-
-# HuggingFace 官方源
-ENV HF_ENDPOINT=https://huggingface.co
+# 安装 uv
+RUN pip3 install uv
 
 # 设置工作目录
 WORKDIR /app
