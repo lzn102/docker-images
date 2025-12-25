@@ -4,7 +4,7 @@
 # 构建: docker build -t media-ai-base:latest .
 # 拉取: docker pull ghcr.io/YOUR_USERNAME/media-ai-base:latest
 
-FROM nvidia/cuda:12.4.0-cudnn-runtime-ubuntu22.04
+FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
 
 # 设置环境变量
 ENV DEBIAN_FRONTEND=noninteractive
