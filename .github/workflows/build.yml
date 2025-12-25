@@ -93,7 +93,7 @@ jobs:
           tags: |
             ${{ env.GHCR_REGISTRY }}/${{ github.repository_owner }}/${{ steps.image.outputs.name }}:latest
             ${{ env.GHCR_REGISTRY }}/${{ github.repository_owner }}/${{ steps.image.outputs.name }}:${{ github.sha }}
-            ${{ secrets.ALIYUN_CR_REGISTRY }}/${{ steps.image.outputs.name }}:latest
-            ${{ secrets.ALIYUN_CR_REGISTRY }}/${{ steps.image.outputs.name }}:${{ github.sha }}
+            ${{ secrets.ALIYUN_CR_REGISTRY }}/ali-docker-store/${{ steps.image.outputs.name }}:latest
+            ${{ secrets.ALIYUN_CR_REGISTRY }}/ali-docker-store/${{ steps.image.outputs.name }}:${{ github.sha }}
           cache-from: type=gha,scope=${{ steps.image.outputs.name }}
           cache-to: type=gha,mode=max,scope=${{ steps.image.outputs.name }}
