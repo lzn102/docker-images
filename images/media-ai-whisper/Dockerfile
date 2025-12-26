@@ -19,6 +19,7 @@ ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu:${LD_LIBRARY
 # 安装系统依赖（包括 Python 和编译工具）
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.11 \
+    python3.11-dev \
     python3.11-venv \
     python3-pip \
     ffmpeg \
