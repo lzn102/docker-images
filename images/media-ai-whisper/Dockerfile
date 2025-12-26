@@ -7,7 +7,7 @@
 #====================================================================
 # 第一阶段: 编译环境
 #====================================================================
-FROM nvidia/cuda:12.4.1-cudnn9-devel-ubuntu22.04 AS builder
+FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
@@ -84,7 +84,7 @@ RUN pip cache purge && rm -rf /root/.cache/pip/*
 #====================================================================
 # 第二阶段: 运行时环境 (体积更小)
 #====================================================================
-FROM nvidia/cuda:12.4.1-cudnn9-runtime-ubuntu22.04
+FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
