@@ -1,6 +1,6 @@
 [project]
 name = "media-ai"
-version = "1.0.0"
+version = "2.0.0"
 description = "AI 语音识别与音频处理服务"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -20,14 +20,11 @@ dependencies = [
     "ffmpeg-python>=0.2.0",
     
     # Speech Recognition (Whisper)
-    "faster-whisper>=1.2.0",
+    # PyTorch 官方镜像自带 CUDA/cuDNN，ctranslate2 应该能正常使用
+    "faster-whisper>=1.0.0",
     
-    # Audio Separation (GPU版，需要 onnxruntime-gpu)
+    # Audio Separation
     "audio-separator[gpu]>=0.18.0",
-    "audio-separator[gpu]>=0.18.0",
-    
-    # 确保 numba 使用支持 Python 3.10 的版本
-    "numba>=0.56.0",
 ]
 
 [build-system]
@@ -36,10 +33,3 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["audio", "routes", "utils"]
-
-# 强制 uv 使用 onnxruntime-gpu 替代 onnxruntime
-# faster-whisper 依赖 onnxruntime，但我们需要 GPU 版本
-[tool.uv]
-override-dependencies = [
-    "onnxruntime-gpu>=1.19.0",
-]
