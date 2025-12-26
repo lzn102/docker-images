@@ -18,6 +18,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
+# cuDNN 库路径 - 必须在进程启动前设置
+# ctranslate2 需要在启动时找到 libcudnn_ops.so 等库
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}
+
 # 1. 安装系统依赖 & uv
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.10 \
@@ -72,5 +76,5 @@ RUN mkdir -p tempfile/downloads tempfile/preprocess tempfile/transcripts && \
     rm -rf /root/.cache/pip/*
 
 # 标记版本
-LABEL version="1.0.9"
+LABEL version="1.1.0"
 LABEL description="Media-AI base image with optimized layering"
