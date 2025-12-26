@@ -19,8 +19,13 @@ dependencies = [
     # Audio/Video Processing
     "ffmpeg-python>=0.2.0",
     
+    # PyTorch - 必须固定版本以匹配基础镜像的 CUDA/cuDNN
+    # 基础镜像 pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime
+    "torch>=2.1.0,<2.2.0",
+    
     # Speech Recognition (Whisper)
-    # PyTorch 官方镜像自带 CUDA/cuDNN，ctranslate2 应该能正常使用
+    # ctranslate2 4.4.0 兼容 cuDNN 8，4.5.0+ 需要 cuDNN 9
+    "ctranslate2==4.4.0",
     "faster-whisper>=1.0.0",
     
     # Audio Separation

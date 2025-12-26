@@ -65,5 +65,5 @@ RUN mkdir -p tempfile/downloads tempfile/preprocess tempfile/transcripts && \
     rm -rf /root/.cache/pip/*
 
 # 标记版本
-LABEL version="2.0.0"
+LABEL version="2.0.1"
 LABEL description="Media-AI base image with PyTorch official CUDA runtime"
