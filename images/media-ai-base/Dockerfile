@@ -10,7 +10,8 @@
 # 构建: docker build -t media-ai-base:latest .
 # 拉取: docker pull ghcr.io/YOUR_USERNAME/media-ai-base:latest
 
-FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
+# 使用 faster-whisper 官方推荐的基础镜像 (CUDA 12.3 + cuDNN 9)
+FROM nvidia/cuda:12.3.2-cudnn9-runtime-ubuntu22.04
 
 # 设置环境变量
 ENV DEBIAN_FRONTEND=noninteractive
@@ -71,5 +72,5 @@ RUN mkdir -p tempfile/downloads tempfile/preprocess tempfile/transcripts && \
     rm -rf /root/.cache/pip/*
 
 # 标记版本
-LABEL version="1.0.8"
+LABEL version="1.0.9"
 LABEL description="Media-AI base image with optimized layering"
