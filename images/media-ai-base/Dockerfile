@@ -51,14 +51,7 @@ RUN mkdir -p /tmp/audio-separator-models && \
     "https://raw.githubusercontent.com/TRvlvr/application_data/main/filelists/download_checks.json"
 
 # 预下载 Audio Separator 模型
-RUN . .venv/bin/activate && python3 -c "\
-    from audio_separator.separator import Separator; \
-    print('下载 Audio Separator 模型...'); \
-    sep = Separator(log_level=20); \
-    sep.load_model(model_filename='UVR-MDX-NET-Inst_Main.onnx'); \
-    sep.load_model(model_filename='MDX23C-8KFFT-InstVoc_HQ.ckpt'); \
-    sep.load_model(model_filename='model_bs_roformer_ep_317_sdr_12.9755.ckpt'); \
-    print('完成')"
+RUN . .venv/bin/activate && python3 -c "from audio_separator.separator import Separator; print('下载 Audio Separator 模型...'); sep = Separator(log_level=20); sep.load_model(model_filename='UVR-MDX-NET-Inst_Main.onnx'); sep.load_model(model_filename='MDX23C-8KFFT-InstVoc_HQ.ckpt'); sep.load_model(model_filename='model_bs_roformer_ep_317_sdr_12.9755.ckpt'); print('完成')"
 
 # 5. 复制依赖配置文件 (变动频繁部分开始)
 COPY pyproject.toml README.md ./
