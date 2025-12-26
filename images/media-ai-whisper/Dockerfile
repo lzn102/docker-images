@@ -11,11 +11,12 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV HF_ENDPOINT=https://hf-mirror.com
 
-# 安装系统依赖
+# 安装系统依赖（包括编译工具，audio-separator 依赖 diffq 需要 gcc）
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     curl \
     git \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
