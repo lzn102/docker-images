@@ -26,6 +26,9 @@ dependencies = [
     
     # Audio Separation (GPU版，需要 onnxruntime-gpu)
     "audio-separator[gpu]>=0.18.0",
+    
+    # 确保 numba 使用支持 Python 3.10 的版本
+    "numba>=0.56.0",
 ]
 
 [build-system]
