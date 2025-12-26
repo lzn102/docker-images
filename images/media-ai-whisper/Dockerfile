@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # 只安装用于下载模型的最小依赖（版本与 pyproject.toml 保持一致）
-RUN pip install --no-cache-dir faster-whisper==1.1.0 "audio-separator[gpu]==0.26.1"
+RUN pip install --no-cache-dir faster-whisper==1.2.1 "audio-separator[gpu]==0.40.0"
 
 # 预下载 Whisper large-v3 模型 (约 3GB)
 RUN python -c "\
