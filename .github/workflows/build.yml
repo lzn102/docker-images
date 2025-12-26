@@ -17,6 +17,7 @@ on:
     branches:
       - media-ai-base
       - media-ai-whisper
+      - media-ai-funasr
       - media-pull
   workflow_dispatch:
     inputs:
@@ -27,6 +28,7 @@ on:
         options:
           - media-ai-base
           - media-ai-whisper
+          - media-ai-funasr
           - media-pull
 
 env:
