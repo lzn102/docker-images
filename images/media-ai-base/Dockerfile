@@ -58,7 +58,9 @@ COPY pyproject.toml README.md ./
 
 # 6. 同步完整项目依赖
 # 这会更新 .venv 中的包版本以匹配 pyproject.toml
-RUN uv sync
+RUN uv sync && \
+    # 强制卸载 CPU 版 onnxruntime，因为 faster-whisper 依赖它但我们需要 GPU 版
+    . .venv/bin/activate && pip uninstall -y onnxruntime || true
 
 # 7. 创建临时文件目录 & 清理
 # 注意: 不要删除 /tmp/audio-separator-models，里面有预下载的模型
@@ -66,5 +68,5 @@ RUN mkdir -p tempfile/downloads tempfile/preprocess tempfile/transcripts && \
     rm -rf /root/.cache/pip/*
 
 # 标记版本
-LABEL version="1.0.2"
+LABEL version="1.0.3"
 LABEL description="Media-AI base image with optimized layering"
