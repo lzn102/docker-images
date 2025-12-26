@@ -20,6 +20,8 @@ dependencies = [
     "ffmpeg-python>=0.2.0",
     
     # Speech Recognition (Whisper)
+    # ctranslate2 4.4.0 对 cuDNN 兼容性更好，4.5.0+ 需要特定版本的 cuDNN 9
+    "ctranslate2==4.4.0",
     "faster-whisper>=1.2.0",
     
     # Audio Separation (GPU版，需要 onnxruntime-gpu)

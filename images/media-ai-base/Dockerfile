@@ -71,5 +71,5 @@ RUN mkdir -p tempfile/downloads tempfile/preprocess tempfile/transcripts && \
     rm -rf /root/.cache/pip/*
 
 # 标记版本
-LABEL version="1.0.7"
+LABEL version="1.0.8"
 LABEL description="Media-AI base image with optimized layering"
