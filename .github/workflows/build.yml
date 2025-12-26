@@ -16,6 +16,7 @@ on:
   push:
     branches:
       - media-ai-base
+      - media-ai-whisper
       - media-pull
   workflow_dispatch:
     inputs:
@@ -25,6 +26,7 @@ on:
         type: choice
         options:
           - media-ai-base
+          - media-ai-whisper
           - media-pull
 
 env:
