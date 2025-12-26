@@ -35,7 +35,7 @@ RUN pip install --no-cache-dir \
 
 # 安装 Fun-ASR 依赖
 RUN pip install --no-cache-dir \
-    funasr>=1.2.7 \
+    "funasr>=1.2.7" \
     transformers \
     modelscope
 
@@ -60,19 +60,23 @@ RUN apt-get purge -y build-essential python3.11-dev && \
 # 验证 PyTorch
 RUN python -c "import torch; print('PyTorch CUDA:', torch.version.cuda, 'cuDNN:', torch.backends.cudnn.version())"
 
-# 复制 model.py (Fun-ASR 需要这个文件来加载模型)
-# 运行时需要从 Fun-ASR 项目复制 model.py 到 /app
+# 克隆 Fun-ASR 项目（获取 model.py）
+RUN git clone --depth 1 https://github.com/FunAudioLLM/Fun-ASR.git /app/Fun-ASR
 
 # 预下载 Fun-ASR-Nano-2512 模型
+WORKDIR /app/Fun-ASR
 RUN python -c "\
 from funasr import AutoModel; \
 print('下载 Fun-ASR-Nano-2512 模型...'); \
 model = AutoModel( \
     model='FunAudioLLM/Fun-ASR-Nano-2512', \
     trust_remote_code=True, \
+    remote_code='./model.py', \
     device='cpu' \
 ); \
 print('✅ Fun-ASR 模型下载完成')"
+
+WORKDIR /app
 
 # 创建临时文件目录
 RUN mkdir -p tempfile/downloads tempfile/preprocess tempfile/transcripts
