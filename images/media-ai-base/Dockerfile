@@ -59,11 +59,11 @@ COPY pyproject.toml README.md ./
 # 6. 同步完整项目依赖
 # 这会更新 .venv 中的包版本以匹配 pyproject.toml
 RUN uv sync && \
-    # 从 NVIDIA 官方源安装 onnxruntime-gpu (包含真正的 CUDA provider)
+    # 安装 onnxruntime-gpu 1.17.1 (已知包含 CUDA provider 的版本)
+    # 新版 1.20+ 的 PyPI 包不包含 CUDA provider
     . .venv/bin/activate && \
     pip uninstall -y onnxruntime onnxruntime-gpu 2>/dev/null || true && \
-    pip install onnxruntime-gpu --no-cache-dir \
-        --extra-index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/
+    pip install onnxruntime-gpu==1.17.1 --no-cache-dir
 
 # 7. 创建临时文件目录 & 清理
 # 注意: 不要删除 /tmp/audio-separator-models，里面有预下载的模型
@@ -71,5 +71,5 @@ RUN mkdir -p tempfile/downloads tempfile/preprocess tempfile/transcripts && \
     rm -rf /root/.cache/pip/*
 
 # 标记版本
-LABEL version="1.0.6"
+LABEL version="1.0.7"
 LABEL description="Media-AI base image with optimized layering"
