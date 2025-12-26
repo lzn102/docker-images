@@ -32,3 +32,10 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["audio", "routes", "utils"]
+
+# 强制 uv 使用 onnxruntime-gpu 替代 onnxruntime
+# faster-whisper 依赖 onnxruntime，但我们需要 GPU 版本
+[tool.uv]
+override-dependencies = [
+    "onnxruntime-gpu>=1.19.0",
+]
