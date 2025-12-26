@@ -84,6 +84,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Extract version from Dockerfile
+        id: version
+        run: |
+          # 从 Dockerfile 的 LABEL version="x.x.x" 中提取版本号
+          VERSION=$(grep -oP 'LABEL version="\K[^"]+' images/${{ steps.image.outputs.name }}/Dockerfile || echo "1.0.0")
+          # 生成日期后缀 (YYYYMMDD)
+          DATE=$(date +%Y%m%d)
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "version_date=${VERSION}-${DATE}" >> $GITHUB_OUTPUT
+          echo "📦 版本号: ${VERSION}, 完整标签: ${VERSION}-${DATE}"
+
       - name: Build and push ${{ steps.image.outputs.name }}
         uses: docker/build-push-action@v5
         with:
@@ -92,8 +103,10 @@ jobs:
           push: true
           tags: |
             ${{ env.GHCR_REGISTRY }}/${{ github.repository_owner }}/${{ steps.image.outputs.name }}:latest
-            ${{ env.GHCR_REGISTRY }}/${{ github.repository_owner }}/${{ steps.image.outputs.name }}:${{ github.sha }}
+            ${{ env.GHCR_REGISTRY }}/${{ github.repository_owner }}/${{ steps.image.outputs.name }}:${{ steps.version.outputs.version }}
+            ${{ env.GHCR_REGISTRY }}/${{ github.repository_owner }}/${{ steps.image.outputs.name }}:${{ steps.version.outputs.version_date }}
             ${{ secrets.ALIYUN_CR_REGISTRY }}/ali-docker-store/${{ steps.image.outputs.name }}:latest
-            ${{ secrets.ALIYUN_CR_REGISTRY }}/ali-docker-store/${{ steps.image.outputs.name }}:${{ github.sha }}
+            ${{ secrets.ALIYUN_CR_REGISTRY }}/ali-docker-store/${{ steps.image.outputs.name }}:${{ steps.version.outputs.version }}
+            ${{ secrets.ALIYUN_CR_REGISTRY }}/ali-docker-store/${{ steps.image.outputs.name }}:${{ steps.version.outputs.version_date }}
           cache-from: type=gha,scope=${{ steps.image.outputs.name }}
           cache-to: type=gha,mode=max,scope=${{ steps.image.outputs.name }}

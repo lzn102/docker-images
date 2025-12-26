@@ -61,9 +61,10 @@ COPY pyproject.toml README.md ./
 RUN uv sync
 
 # 7. 创建临时文件目录 & 清理
+# 注意: 不要删除 /tmp/audio-separator-models，里面有预下载的模型
 RUN mkdir -p tempfile/downloads tempfile/preprocess tempfile/transcripts && \
-    rm -rf /root/.cache/pip/* /tmp/*
+    rm -rf /root/.cache/pip/*
 
 # 标记版本
-LABEL version="1.0.1"
+LABEL version="1.0.2"
 LABEL description="Media-AI base image with optimized layering"
