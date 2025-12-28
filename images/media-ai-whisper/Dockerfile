@@ -28,31 +28,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# 安装 PyTorch (使用官方 CUDA 12.4 wheel)
+# 安装 PyTorch 2.4.1 (匹配 cuDNN 9.1，稳定版本)
+# 使用 cu121 版本，兼容性好
 RUN pip install --no-cache-dir \
-    torch torchvision torchaudio \
-    --index-url https://download.pytorch.org/whl/cu124
+    torch==2.4.1 torchvision torchaudio \
+    --index-url https://download.pytorch.org/whl/cu121
 
-# 安装 faster-whisper 和 audio-separator
+# 安装核心 AI 库
+# 关键：显式安装 onnxruntime-gpu，防止后续依赖拉取 CPU 版本
 RUN pip install --no-cache-dir \
+    onnxruntime-gpu \
     faster-whisper==1.2.1 \
     "audio-separator[gpu]==0.40.0"
 
-# 清理 Python 层的 CUDA/cuDNN 包（确保只用系统的）
-RUN pip uninstall -y \
-    nvidia-cudnn-cu12 \
-    nvidia-cuda-runtime-cu12 \
-    nvidia-cublas-cu12 \
-    nvidia-cufft-cu12 \
-    nvidia-curand-cu12 \
-    nvidia-cusolver-cu12 \
-    nvidia-cusparse-cu12 \
-    nvidia-nccl-cu12 \
-    nvidia-nvtx-cu12 \
-    2>/dev/null || true
-
-# 安装 onnxruntime-gpu
-RUN pip install --no-cache-dir onnxruntime-gpu==1.23.2
+# 注入 LD_LIBRARY_PATH (关键优化)
+# 让所有基于此镜像的应用都能自动找到 PyTorch 自带的 NVIDIA 运行时库
+# 这样不仅解决了 Docker 内的库加载问题，也与我们在 Host 上的 run.sh 逻辑保持一致
+ENV LD_LIBRARY_PATH=/usr/local/lib/python3.11/site-packages/torch/lib:/usr/local/lib/python3.11/site-packages/nvidia/cudnn/lib:/usr/local/lib/python3.11/site-packages/nvidia/cublas/lib:${LD_LIBRARY_PATH}
 
 # 清理编译工具（减小体积）
 RUN apt-get purge -y build-essential python3.11-dev && \
